@@ -78,6 +78,9 @@
         <activity
             android:name=".view.screens.account.account.pin.ChangePinActivity"
             android:label=""></activity>
+        <activity
+            android:name=".view.screens.applogin.LoginActivity"
+            android:label=""></activity>
     </application>
 
 </manifest>

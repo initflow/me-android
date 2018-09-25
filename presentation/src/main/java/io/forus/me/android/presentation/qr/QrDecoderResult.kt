@@ -8,6 +8,8 @@ sealed class QrDecoderResult {
 
     data class ScanVoucher(val address: String) : QrDecoderResult()
 
+    data class AppLogin(val address: String) : QrDecoderResult()
+
     data class UnknownQr(val error: Throwable) : QrDecoderResult()
 
 }

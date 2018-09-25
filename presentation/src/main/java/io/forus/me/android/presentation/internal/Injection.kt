@@ -6,11 +6,13 @@ import com.gigawatt.android.data.net.sign.SignService
 import io.forus.me.android.data.entity.database.DaoSession
 import io.forus.me.android.data.exception.RetrofitExceptionMapper
 import io.forus.me.android.data.net.MeServiceFactory
+import io.forus.me.android.data.net.applogin.AppLoginService
 import io.forus.me.android.data.net.validators.ValidatorsService
 import io.forus.me.android.data.net.vouchers.VouchersService
 import io.forus.me.android.data.repository.account.datasource.local.AccountLocalDataSource
 import io.forus.me.android.data.repository.account.datasource.remote.AccountRemoteDataSource
 import io.forus.me.android.data.repository.account.datasource.remote.CheckActivationDataSource
+import io.forus.me.android.data.repository.applogin.datasource.remote.AppLoginRemoteDataSource
 import io.forus.me.android.data.repository.records.RecordsRepository
 import io.forus.me.android.data.repository.records.datasource.mock.RecordsMockDataSource
 import io.forus.me.android.data.repository.records.datasource.remote.RecordsRemoteDataSource
@@ -23,6 +25,7 @@ import io.forus.me.android.data.repository.vouchers.datasource.remote.VouchersRe
 import io.forus.me.android.data.repository.web3.datasource.Web3DataSource
 import io.forus.me.android.data.repository.web3.datasource.local.Web3LocalDataSource
 import io.forus.me.android.domain.repository.account.AccountRepository
+import io.forus.me.android.domain.repository.applogin.AppLoginRepository
 import io.forus.me.android.domain.repository.assets.AssetsRepository
 import io.forus.me.android.domain.repository.vouchers.VouchersRepository
 import io.forus.me.android.domain.repository.wallets.WalletsRepository
@@ -137,6 +140,14 @@ class Injection private constructor() {
 
     val qrDecoder: QrDecoder by lazy {
         return@lazy QrDecoder()
+    }
+
+    private val appLoginRemoteDataSource : AppLoginRemoteDataSource by lazy {
+        return@lazy AppLoginRemoteDataSource{MeServiceFactory.getInstance().createRetrofitService(AppLoginService::class.java, AppLoginService.Service.SERVICE_ENDPOINT)}
+    }
+
+    val appLoginRepository: AppLoginRepository by lazy {
+        return@lazy io.forus.me.android.data.repository.applogin.AppLoginRepository(appLoginRemoteDataSource)
     }
 
 }

@@ -99,6 +99,10 @@ class QrActionProcessor(private val scanner: QrScannerActivity,
                 .subscribe()
     }
 
+    fun appLogin(address: String){
+        onResultAppLogin(address)
+    }
+
     fun unknownQr(){
         showToastMessage(resources.getString(R.string.qr_unknown_type))
         reactivateDecoding()
@@ -147,6 +151,13 @@ class QrActionProcessor(private val scanner: QrScannerActivity,
     private fun onResultUnexpectedError(){
         showToastMessage(resources.getString(R.string.qr_unexpected_error))
         reactivateDecoding()
+    }
+
+    private fun onResultAppLogin(address: String){
+        Navigator().navigateToAppLogin(scanner, address)
+        (android.os.Handler()).postDelayed({
+            reactivateDecoding()
+        },1000)
     }
 
 }

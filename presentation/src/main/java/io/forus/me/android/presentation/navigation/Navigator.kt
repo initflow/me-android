@@ -12,6 +12,7 @@ import io.forus.me.android.presentation.view.screens.account.assigndelegates.Ass
 import io.forus.me.android.presentation.view.screens.account.newaccount.NewAccountActivity
 import io.forus.me.android.presentation.view.screens.account.newaccount.pin.NewPinActivity
 import io.forus.me.android.presentation.view.screens.account.assigndelegates.email.RestoreByEmailActivity
+import io.forus.me.android.presentation.view.screens.applogin.LoginActivity
 import io.forus.me.android.presentation.view.screens.dashboard.DashboardActivity
 import io.forus.me.android.presentation.view.screens.lock.PinLockActivity
 import io.forus.me.android.presentation.view.screens.qr.QrScannerActivity
@@ -145,6 +146,13 @@ constructor()//empty
         if(context != null){
             val intentToLaunch = ChangePinActivity.getCallingIntent(context, mode)
             caller.startActivityForResult(intentToLaunch, requestCode)
+        }
+    }
+
+    fun navigateToAppLogin(context: Context?, address: String){
+        if(context != null){
+            val intentToLaunch = LoginActivity.getCallingIntent(context, address)
+            context.startActivity(intentToLaunch)
         }
     }
 }

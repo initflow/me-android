@@ -96,4 +96,10 @@ abstract class ToolbarLRFragment<M, V : LRView<M>, P : MviBasePresenter<V, LRVie
         Regular, Small
     }
 
+    protected fun setToolbarBackgroundColor(color: Int){
+        appbar.setBackgroundColor(color)
+        collapsing_toolbar.setBackgroundColor(color)
+        toolbar_view.setBackgroundColor(color)
+        toolbar_title.setBackgroundColor(color)
+    }
 }

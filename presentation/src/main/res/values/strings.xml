@@ -159,4 +159,8 @@
     <string name="vouchers_make_transaction_failure">Transaction failed</string>
     <string name="vouchers_transaction_payment">Payment</string>
 
+    <!-- AppLogin -->
+    <string name="app_login_title">App Login</string>
+    <string name="app_login_share">Share</string>
+
 </resources>

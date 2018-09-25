@@ -103,6 +103,7 @@ class QrScannerActivity : FragmentActivity(), QRCodeReaderView.OnQRCodeReadListe
                 is QrDecoderResult.ApproveValidation -> qrActionProcessor.approveValidation(result.uuid)
                 is QrDecoderResult.RestoreIdentity -> qrActionProcessor.restoreIdentity(result.token)
                 is QrDecoderResult.ScanVoucher -> qrActionProcessor.scanVoucher(result.address)
+                is QrDecoderResult.AppLogin -> qrActionProcessor.appLogin(result.address)
                 is QrDecoderResult.UnknownQr -> qrActionProcessor.unknownQr()
             }
         }
