@@ -34,7 +34,7 @@ class QrScannerActivity : FragmentActivity(), QRCodeReaderView.OnQRCodeReadListe
     private var pointsOverlayView: PointsOverlayView? = null
 
     private var qrDecoder = Injection.instance.qrDecoder
-    private var qrActionProcessor = QrActionProcessor(this, Injection.instance.recordsRepository, Injection.instance.accountRepository, Injection.instance.vouchersRepository)
+    private var qrActionProcessor = QrActionProcessor(this, Injection.instance.recordsRepository, Injection.instance.accountRepository, Injection.instance.vouchersRepository, Injection.instance.appLoginRepository)
 
     private var decodingInProgress = AtomicBoolean()
     var reactivateDecoding = { decodingInProgress.set(false); qrCodeReaderView?.setQRDecodingEnabled(true); Unit }

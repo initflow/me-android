@@ -10,11 +10,11 @@ class LoginActivity : CommonActivity() {
 
     companion object {
 
-        val LOGIN_ADDRESS_EXTRA = "LOGIN_ADDRESS_EXTRA"
+        val LOGIN_KEY_EXTRA = "LOGIN_KEY_EXTRA"
 
         fun getCallingIntent(context: Context, id: String): Intent {
             val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(LOGIN_ADDRESS_EXTRA, id)
+            intent.putExtra(LOGIN_KEY_EXTRA, id)
             return intent
         }
     }
@@ -29,8 +29,7 @@ class LoginActivity : CommonActivity() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            // intent.getStringExtra(LOGIN_ADDRESS_EXTRA)
-            val fragment = LoginFragment.newIntent()
+            val fragment = LoginFragment.newIntent(intent.getStringExtra(LOGIN_KEY_EXTRA))
 
             addFragment(R.id.fragmentContainer, fragment)
         }

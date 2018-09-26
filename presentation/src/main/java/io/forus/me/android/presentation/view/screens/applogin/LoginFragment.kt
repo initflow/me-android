@@ -16,12 +16,12 @@ import kotlinx.android.synthetic.main.fragment_app_login.*
 class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>(), LoginView{
 
     companion object {
-//        private val VOUCHER_ADDRESS_EXTRA = "VOUCHER_ADDRESS_EXTRA"
+        private val LOGIN_KEY_EXTRA = "LOGIN_KEY_EXTRA"
 
-        fun newIntent(): LoginFragment = LoginFragment().also {
-//            val bundle = Bundle()
-//            bundle.putSerializable(VOUCHER_ADDRESS_EXTRA, id)
-//            it.arguments = bundle
+        fun newIntent(key: String): LoginFragment = LoginFragment().also {
+            val bundle = Bundle()
+            bundle.putSerializable(LOGIN_KEY_EXTRA, key)
+            it.arguments = bundle
         }
     }
 
@@ -43,12 +43,17 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
         }
     }
 
+    private lateinit var key: String
+
     override fun share(): Observable<Unit> = RxView.clicks(btn_share).map { Unit }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.fragment_app_login, container, false).also {
 
-
+        val bundle = this.arguments
+        if (bundle != null) {
+            key = bundle.getString(LOGIN_KEY_EXTRA)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,12 +64,17 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
 
 
     override fun createPresenter() = LoginPresenter(
+            key,
             Injection.instance.appLoginRepository
     )
 
 
     override fun render(vs: LRViewState<LoginModel>) {
         super.render(vs)
+
+        if(vs.model.loginInfo != null){
+            tv_organization_name.text = vs.model.loginInfo.organization.title
+        }
 
         if(vs.model.profileShared){
             btn_share.visibility = View.GONE

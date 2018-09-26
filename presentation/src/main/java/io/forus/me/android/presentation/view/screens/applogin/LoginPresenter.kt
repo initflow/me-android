@@ -1,5 +1,6 @@
 package io.forus.me.android.presentation.view.screens.applogin
 
+import io.forus.me.android.domain.models.applogin.LoginInfo
 import io.forus.me.android.domain.repository.applogin.AppLoginRepository
 import io.forus.me.android.presentation.view.base.lr.LRPresenter
 import io.forus.me.android.presentation.view.base.lr.LRViewState
@@ -9,13 +10,15 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 class LoginPresenter constructor(
+        private val key: String,
         private val appLoginRepository: AppLoginRepository
-) : LRPresenter<LoginModel, LoginModel, LoginView>() {
+) : LRPresenter<LoginInfo, LoginModel, LoginView>() {
 
-    override fun initialModelSingle(): Single<LoginModel> = Single.just(LoginModel())
+    override fun initialModelSingle(): Single<LoginInfo> =
+            Single.fromObservable { appLoginRepository.loginInfo(key) }
 
-    override fun LoginModel.changeInitialModel(i: LoginModel): LoginModel {
-        return LoginModel()
+    override fun LoginModel.changeInitialModel(i: LoginInfo): LoginModel {
+        return LoginModel(loginInfo=i)
     }
 
     override fun bindIntents() {

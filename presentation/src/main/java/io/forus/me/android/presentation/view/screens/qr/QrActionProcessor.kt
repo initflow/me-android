@@ -3,6 +3,7 @@ package io.forus.me.android.presentation.view.screens.qr
 import io.forus.me.android.domain.exception.RetrofitException
 import io.forus.me.android.domain.models.records.Validation
 import io.forus.me.android.domain.repository.account.AccountRepository
+import io.forus.me.android.domain.repository.applogin.AppLoginRepository
 import io.forus.me.android.domain.repository.records.RecordsRepository
 import io.forus.me.android.domain.repository.vouchers.VouchersRepository
 import io.forus.me.android.presentation.R
@@ -16,7 +17,8 @@ import io.reactivex.schedulers.Schedulers
 class QrActionProcessor(private val scanner: QrScannerActivity,
                         private val recordsRepository: RecordsRepository,
                         private val accountRepository: AccountRepository,
-                        private val vouchersRepository: VouchersRepository) {
+                        private val vouchersRepository: VouchersRepository,
+                        private val appLoginRepository: AppLoginRepository) {
 
     private val resources by lazy{
         return@lazy scanner.resources
@@ -99,8 +101,17 @@ class QrActionProcessor(private val scanner: QrScannerActivity,
                 .subscribe()
     }
 
-    fun appLogin(address: String){
-        onResultAppLogin(address)
+    fun appLogin(publicKey: String){
+        appLoginRepository.createLogin(publicKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    onResultAppLogin(it)
+                }
+                .onErrorReturn {
+                    onResultUnexpectedError()
+                }
+                .subscribe()
     }
 
     fun unknownQr(){
@@ -153,11 +164,10 @@ class QrActionProcessor(private val scanner: QrScannerActivity,
         reactivateDecoding()
     }
 
-    private fun onResultAppLogin(address: String){
-        Navigator().navigateToAppLogin(scanner, address)
+    private fun onResultAppLogin(key: String){
+        Navigator().navigateToAppLogin(scanner, key)
         (android.os.Handler()).postDelayed({
             reactivateDecoding()
         },1000)
     }
-
 }
