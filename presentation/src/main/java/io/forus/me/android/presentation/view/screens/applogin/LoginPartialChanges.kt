@@ -6,4 +6,6 @@ sealed class LoginPartialChanges : PartialChange {
 
     data class ShareSuccess(val void: Unit) : LoginPartialChanges()
 
+    data class DeclineSuccess(val void: Unit) : LoginPartialChanges()
+
 }

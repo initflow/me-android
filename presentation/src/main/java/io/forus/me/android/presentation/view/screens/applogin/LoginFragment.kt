@@ -1,6 +1,7 @@
 package io.forus.me.android.presentation.view.screens.applogin
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,18 +35,21 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
     override fun viewForSnackbar(): View = root
 
     override fun loadRefreshPanel() = object : LoadRefreshPanel {
-        override fun retryClicks(): Observable<Any> = Observable.never()
+
+        init { lr_panel.disableSwipeRefresh() }
+
+        override fun retryClicks(): Observable<Any> = lr_panel.retryClicks()
 
         override fun refreshes(): Observable<Any> = Observable.never()
 
-        override fun render(vs: LRViewState<*>) {
-
-        }
+        override fun render(vs: LRViewState<*>) =lr_panel.render(vs)
     }
 
     private lateinit var key: String
 
     override fun share(): Observable<Unit> = RxView.clicks(btn_share).map { Unit }
+
+    override fun decline(): Observable<Unit> = RxView.clicks(btn_decline).map { Unit }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.fragment_app_login, container, false).also {
@@ -65,21 +69,23 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
 
     override fun createPresenter() = LoginPresenter(
             key,
-            Injection.instance.appLoginRepository
+            Injection.instance.appLoginRepository,
+            Injection.instance.accountLocalDataSource
     )
 
 
     override fun render(vs: LRViewState<LoginModel>) {
         super.render(vs)
 
-        if(vs.model.loginInfo != null){
-            tv_organization_name.text = vs.model.loginInfo.organization.title
-        }
+        btn_share.visibility = if(vs.model.profileShared || vs.loading || vs.loadingError != null) View.GONE else View.VISIBLE
+        btn_decline.visibility = if(vs.model.profileShared || vs.loading || vs.loadingError != null) View.GONE else View.VISIBLE
 
         if(vs.model.profileShared){
-            btn_share.visibility = View.GONE
-            tv_request.visibility = View.GONE
             setBackgroundColor(resources.getColor(R.color.green_bg))
+        }
+
+        if(vs.loadingError != null){
+            Snackbar.make(viewForSnackbar(), R.string.app_login_info_error, Snackbar.LENGTH_SHORT).show()
         }
 
         if(vs.closeScreen) closeScreen()

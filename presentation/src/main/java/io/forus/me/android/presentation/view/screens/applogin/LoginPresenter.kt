@@ -1,21 +1,25 @@
 package io.forus.me.android.presentation.view.screens.applogin
 
+import io.forus.me.android.data.repository.account.datasource.local.AccountLocalDataSource
 import io.forus.me.android.domain.models.applogin.LoginInfo
 import io.forus.me.android.domain.repository.applogin.AppLoginRepository
+import io.forus.me.android.presentation.view.base.lr.LRPartialChange
 import io.forus.me.android.presentation.view.base.lr.LRPresenter
 import io.forus.me.android.presentation.view.base.lr.LRViewState
 import io.forus.me.android.presentation.view.base.lr.PartialChange
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class LoginPresenter constructor(
         private val key: String,
-        private val appLoginRepository: AppLoginRepository
+        private val appLoginRepository: AppLoginRepository,
+        private val accountLocalDataSource: AccountLocalDataSource
 ) : LRPresenter<LoginInfo, LoginModel, LoginView>() {
 
-    override fun initialModelSingle(): Single<LoginInfo> =
-            Single.fromObservable { appLoginRepository.loginInfo(key) }
+
+    override fun initialModelSingle(): Single<LoginInfo> = Single.fromObservable(appLoginRepository.loginInfo(key))
 
     override fun LoginModel.changeInitialModel(i: LoginInfo): LoginModel {
         return LoginModel(loginInfo=i)
@@ -28,8 +32,31 @@ class LoginPresenter constructor(
                 loadRefreshPartialChanges(),
 
                 intent { it.share() }
-                        .map {
-                            LoginPartialChanges.ShareSuccess(Unit)
+                        .switchMap {
+                            appLoginRepository.loginAllow(key, accountLocalDataSource.getCurrentToken())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .map<PartialChange> {
+                                        LoginPartialChanges.ShareSuccess(Unit)
+                                    }
+                                    .onErrorReturn {
+                                        LRPartialChange.LoadingError(it)
+                                    }
+                                    .startWith(LRPartialChange.LoadingStarted)
+                        },
+
+                intent { it.decline() }
+                        .switchMap {
+                            appLoginRepository.loginDisallow(key)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .map<PartialChange> {
+                                        LoginPartialChanges.DeclineSuccess(Unit)
+                                    }
+                                    .onErrorReturn {
+                                        LRPartialChange.LoadingError(it)
+                                    }
+                                    .startWith(LRPartialChange.LoadingStarted)
                         }
 
         )
@@ -55,7 +82,8 @@ class LoginPresenter constructor(
         if (change !is LoginPartialChanges) return super.stateReducer(vs, change)
 
         return when (change) {
-            is LoginPartialChanges.ShareSuccess -> vs.copy(model = vs.model.copy(profileShared = true))
+            is LoginPartialChanges.ShareSuccess -> vs.copy(model = vs.model.copy(profileShared = true), loading = false)
+            is LoginPartialChanges.DeclineSuccess -> vs.copy(closeScreen = true)
         }
     }
 }

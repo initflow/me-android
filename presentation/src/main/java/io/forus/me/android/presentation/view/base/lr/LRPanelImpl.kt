@@ -67,4 +67,8 @@ class LRPanelImpl @JvmOverloads constructor(context: Context, attrs: AttributeSe
         this.isRefreshing = vs.refreshing
         this.isEnabled = vs.canRefresh
     }
+
+    fun disableSwipeRefresh(){
+        setDistanceToTriggerSync(999999)
+    }
 }

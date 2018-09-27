@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface AppLoginService{
 
     object Service {
-        @JvmStatic  val SERVICE_ENDPOINT : String = "http://136.144.185.49/nl/"
+        @JvmStatic  val SERVICE_ENDPOINT : String = "http://136.144.185.49/en/"
     }
 
     @POST("organisation/create_login/")

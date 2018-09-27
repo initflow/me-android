@@ -7,4 +7,6 @@ interface LoginView : LRView<LoginModel> {
 
     fun share(): Observable<Unit>
 
+    fun decline(): Observable<Unit>
+
 }

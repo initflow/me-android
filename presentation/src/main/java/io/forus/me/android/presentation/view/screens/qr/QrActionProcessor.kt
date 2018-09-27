@@ -101,15 +101,15 @@ class QrActionProcessor(private val scanner: QrScannerActivity,
                 .subscribe()
     }
 
-    fun appLogin(publicKey: String){
-        appLoginRepository.createLogin(publicKey)
+    fun appLogin(key: String){
+        appLoginRepository.loginInfo(key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
-                    onResultAppLogin(it)
+                    onResultAppLogin(it.key)
                 }
                 .onErrorReturn {
-                    onResultUnexpectedError()
+                    onResultAppLoginError()
                 }
                 .subscribe()
     }
@@ -169,5 +169,10 @@ class QrActionProcessor(private val scanner: QrScannerActivity,
         (android.os.Handler()).postDelayed({
             reactivateDecoding()
         },1000)
+    }
+
+    private fun onResultAppLoginError(){
+        showToastMessage(resources.getString(R.string.app_login_info_error))
+        reactivateDecoding()
     }
 }

@@ -161,6 +161,10 @@
 
     <!-- AppLogin -->
     <string name="app_login_title">App Login</string>
+    <string name="app_login_question">Want to share with consul that you: \n- live in Angelslo</string>
+    <string name="app_login_description">share my email address so I can be canted later</string>
     <string name="app_login_share">Share</string>
+    <string name="app_login_decline">Decline</string>
+    <string name="app_login_info_error">AppLogin error</string>
 
 </resources>
