@@ -150,8 +150,8 @@
 
     <!-- AppLogin -->
     <string name="app_login_title">App Login</string>
-    <string name="app_login_question">Wil je met consul delen dat je: \n- woont in Angeslo</string>
-    <string name="app_login_description">deel mijn email adres zodat ik gecontacteerd kan worden</string>
+    <string name="app_login_question">De gemeente Emmen vraagt bevestiging van de volgende gegevens:\n- woonachtig in Angelslo\n- 18 jaar of ouder</string>
+    <string name="app_login_description">deel mijn email adres zodat ik geïnformeerd kan worden over: de uitslag en voortgang</string>
     <string name="app_login_share">Akkoord</string>
     <string name="app_login_decline">Weiger</string>
 

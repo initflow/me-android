@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import io.forus.me.android.presentation.view.base.lr.LRViewState
 import io.forus.me.android.presentation.R
 import io.forus.me.android.presentation.internal.Injection
+import io.forus.me.android.presentation.view.base.lr.LRFragment
 import io.forus.me.android.presentation.view.fragment.ToolbarLRFragment
 import kotlinx.android.synthetic.main.fragment_vouchers_recycler.*
 
 /**
  * Fragment Vouchers Delegates Screen.
  */
-class VouchersFragment : ToolbarLRFragment<VouchersModel, VouchersView, VouchersPresenter>(), VouchersView{
+class VouchersFragment : LRFragment<VouchersModel, VouchersView, VouchersPresenter>(), VouchersView{
 
     companion object {
         fun newIntent(): VouchersFragment {
@@ -24,12 +25,12 @@ class VouchersFragment : ToolbarLRFragment<VouchersModel, VouchersView, Vouchers
 
     private lateinit var adapter: VouchersAdapter
 
-    override val toolbarTitle: String
-        get() = getString(R.string.dashboard_vouchers)
-
-
-    override val allowBack: Boolean
-        get() = false
+//    override val toolbarTitle: String
+//        get() = getString(R.string.dashboard_vouchers)
+//
+//
+//    override val allowBack: Boolean
+//        get() = false
 
     override fun viewForSnackbar(): View = root
 
