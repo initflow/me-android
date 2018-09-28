@@ -9,4 +9,5 @@ interface LoginView : LRView<LoginModel> {
 
     fun decline(): Observable<Unit>
 
+    fun switchSubscribe(): Observable<Unit>
 }

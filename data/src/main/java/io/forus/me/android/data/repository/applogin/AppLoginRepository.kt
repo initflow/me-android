@@ -15,8 +15,8 @@ class AppLoginRepository(private val appLoginDataSource: AppLoginDataSource) : i
                 it.data, io.forus.me.android.domain.models.applogin.LoginInfo.Organization(it.organization.title, it.organization.owner, it.organization.publicKey)) }
     }
 
-    override fun loginAllow(key: String, authToken: String): Observable<Boolean> {
-        return appLoginDataSource.loginAllow(key, authToken).map { true }
+    override fun loginAllow(key: String, authToken: String, isSubscribe: Boolean): Observable<Boolean> {
+        return appLoginDataSource.loginAllow(key, authToken, isSubscribe).map { true }
     }
 
     override fun loginDisallow(key: String): Observable<Boolean> {

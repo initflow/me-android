@@ -10,11 +10,15 @@ public class AllowRequest {
     @SerializedName("auth_token")
     private String authToken;
 
+    @SerializedName("is_subscribe")
+    private Boolean isSubscribe = false;
+
     public AllowRequest() { }
 
-    public AllowRequest(String key, String authToken) {
+    public AllowRequest(String key, String authToken, Boolean isSubscribe) {
         this.key = key;
         this.authToken = authToken;
+        this.isSubscribe = isSubscribe;
     }
 
     public String getKey() {
@@ -31,5 +35,13 @@ public class AllowRequest {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public Boolean getIsSubscribe() {
+        return isSubscribe;
+    }
+
+    public void setIsSubscribe(Boolean isSubscribe) {
+        this.isSubscribe = isSubscribe;
     }
 }

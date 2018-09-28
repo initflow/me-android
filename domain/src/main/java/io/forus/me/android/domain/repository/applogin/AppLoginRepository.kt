@@ -9,7 +9,7 @@ interface AppLoginRepository {
 
     fun loginInfo(key: String) : Observable<LoginInfo>
 
-    fun loginAllow(key: String, authToken: String) : Observable<Boolean>
+    fun loginAllow(key: String, authToken: String, isSubscribe: Boolean) : Observable<Boolean>
 
     fun loginDisallow(key: String) : Observable<Boolean>
 }

@@ -16,8 +16,8 @@ class AppLoginRemoteDataSource(f: () -> AppLoginService): AppLoginDataSource, Re
         return service.loginInfo(key)
     }
 
-    override fun loginAllow(key: String, authToken: String): Observable<LoginResponse> {
-        return service.loginAllow(AllowRequest(key, authToken))
+    override fun loginAllow(key: String, authToken: String, isSubscribe: Boolean): Observable<LoginResponse> {
+        return service.loginAllow(AllowRequest(key, authToken, isSubscribe))
     }
 
     override fun loginDisallow(key: String): Observable<LoginResponse> {

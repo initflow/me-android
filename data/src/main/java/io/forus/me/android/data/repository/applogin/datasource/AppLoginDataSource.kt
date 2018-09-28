@@ -11,7 +11,7 @@ interface AppLoginDataSource {
 
     fun loginInfo(key: String) : Observable<LoginInfo>
 
-    fun loginAllow(key: String, authToken: String) : Observable<LoginResponse>
+    fun loginAllow(key: String, authToken: String, isSubscribe: Boolean) : Observable<LoginResponse>
 
     fun loginDisallow(key: String) : Observable<LoginResponse>
 }

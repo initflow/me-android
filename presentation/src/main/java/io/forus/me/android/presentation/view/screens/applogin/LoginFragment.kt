@@ -51,6 +51,8 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
 
     override fun decline(): Observable<Unit> = RxView.clicks(btn_decline).map { Unit }
 
+    override fun switchSubscribe(): Observable<Unit> = RxView.clicks(cb_subscribe).map { Unit }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = inflater.inflate(R.layout.fragment_app_login, container, false).also {
 
@@ -80,8 +82,10 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
         btn_share.visibility = if(vs.model.profileShared || vs.loading || vs.loadingError != null) View.GONE else View.VISIBLE
         btn_decline.visibility = if(vs.model.profileShared || vs.loading || vs.loadingError != null) View.GONE else View.VISIBLE
 
+        cb_subscribe.isChecked = vs.model.isSubscribe
+
         if(vs.model.profileShared){
-            setBackgroundColor(resources.getColor(R.color.green_bg))
+            profileShared()
         }
 
         if(vs.loadingError != null){
@@ -91,9 +95,10 @@ class LoginFragment : ToolbarLRFragment<LoginModel, LoginView, LoginPresenter>()
         if(vs.closeScreen) closeScreen()
     }
 
-    private fun setBackgroundColor(color: Int){
-        root.setBackgroundColor(color)
-        setToolbarBackgroundColor(color)
+    private fun profileShared(){
+        if(context != null) {
+            ShareSuccessDialog(context!!, {closeScreen()}, {closeScreen()}).show()
+        }
     }
 
     private fun closeScreen() {

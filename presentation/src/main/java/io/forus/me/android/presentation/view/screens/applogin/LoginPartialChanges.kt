@@ -8,4 +8,5 @@ sealed class LoginPartialChanges : PartialChange {
 
     data class DeclineSuccess(val void: Unit) : LoginPartialChanges()
 
+    data class SwitchSubscribe(val void: Unit) : LoginPartialChanges()
 }

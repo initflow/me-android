@@ -154,6 +154,7 @@
     <string name="app_login_description">deel mijn email adres zodat ik geïnformeerd kan worden over: de uitslag en voortgang</string>
     <string name="app_login_share">Akkoord</string>
     <string name="app_login_decline">Weiger</string>
-
+    <string name="app_login_share_success">Succes</string>
+    <string name="app_login_share_success_description">Uw stem is geregistreerd</string>
 
 </resources>

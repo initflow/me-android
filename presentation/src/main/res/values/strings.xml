@@ -165,6 +165,8 @@
     <string name="app_login_description">deel mijn email adres zodat ik geïnformeerd kan worden over: de uitslag en voortgang</string>
     <string name="app_login_share">Share</string>
     <string name="app_login_decline">Decline</string>
+    <string name="app_login_share_success">Success</string>
+    <string name="app_login_share_success_description">You successfully registered</string>
     <string name="app_login_info_error">AppLogin error</string>
 
 </resources>

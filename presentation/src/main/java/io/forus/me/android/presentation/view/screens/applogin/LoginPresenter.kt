@@ -18,6 +18,7 @@ class LoginPresenter constructor(
         private val accountLocalDataSource: AccountLocalDataSource
 ) : LRPresenter<LoginInfo, LoginModel, LoginView>() {
 
+    var isSubscribe: Boolean = false
 
     override fun initialModelSingle(): Single<LoginInfo> = Single.fromObservable(appLoginRepository.loginInfo(key))
 
@@ -33,7 +34,7 @@ class LoginPresenter constructor(
 
                 intent { it.share() }
                         .switchMap {
-                            appLoginRepository.loginAllow(key, accountLocalDataSource.getCurrentToken())
+                            appLoginRepository.loginAllow(key, accountLocalDataSource.getCurrentToken(), isSubscribe)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .map<PartialChange> {
@@ -57,7 +58,10 @@ class LoginPresenter constructor(
                                         LRPartialChange.LoadingError(it)
                                     }
                                     .startWith(LRPartialChange.LoadingStarted)
-                        }
+                        },
+
+                intent { it.switchSubscribe() }
+                        .map { LoginPartialChanges.SwitchSubscribe(Unit) }
 
         )
 
@@ -84,6 +88,10 @@ class LoginPresenter constructor(
         return when (change) {
             is LoginPartialChanges.ShareSuccess -> vs.copy(model = vs.model.copy(profileShared = true), loading = false)
             is LoginPartialChanges.DeclineSuccess -> vs.copy(closeScreen = true)
+            is LoginPartialChanges.SwitchSubscribe -> {
+                isSubscribe = !vs.model.isSubscribe
+                vs.copy(model = vs.model.copy(isSubscribe = isSubscribe))
+            }
         }
     }
 }
