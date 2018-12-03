@@ -289,7 +289,6 @@ class VoucherFragment : ToolbarLRFragment<VoucherModel, VoucherView, VoucherPres
     }
 
     fun showEmailSendDialog() {
-    private fun showEmailSentDialog(){
         SendVoucherSuccessDialog(context!!) {
             sentEmailDialogShown.onNext(Unit)
         }.show()
@@ -318,6 +317,7 @@ class VoucherFragment : ToolbarLRFragment<VoucherModel, VoucherView, VoucherPres
         intent.data = Uri.parse(uri)
         startActivity(intent)
     }
+
     private fun showEmailSendDialog(){
         sendEmailDialog.show()
     }
