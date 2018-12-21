@@ -35,7 +35,7 @@ android {
         buildConfigField "int", "BUILD_NUMBER", globalConfiguration.getAt("androidBuildNumber").toString()
 
         resValue "string", "maps_key", "$MAPS_KEY"
-
+        vectorDrawables.useSupportLibrary = true
     }
 
     dexOptions {

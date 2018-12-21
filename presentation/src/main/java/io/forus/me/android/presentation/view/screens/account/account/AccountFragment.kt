@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.animation.Animation
 import io.forus.me.android.domain.models.qr.QrCode
 import io.forus.me.android.presentation.BuildConfig
 import io.forus.me.android.presentation.R
@@ -22,7 +24,12 @@ import io.forus.me.android.presentation.view.screens.account.account.dialogs.Abo
 import io.forus.me.android.presentation.view.screens.dashboard.DashboardActivity
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.account_item.*
 import kotlinx.android.synthetic.main.fragment_account_details.*
+import kotlinx.android.synthetic.main.toolbar_view.*
+import android.view.animation.TranslateAnimation
+
+
 
 
 /**
@@ -75,10 +82,17 @@ class AccountFragment : ToolbarLRFragment<AccountModel, AccountView, AccountPres
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = inflater.inflate(R.layout.fragment_account_details, container, false)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        drop_down.visibility = View.VISIBLE
 
+        toolbar_view.setOnClickListener {
+            if (account_card_view.visibility == View.GONE) {
+                slideDown(account_card_view)
+            } else {
+                slideUp(account_card_view)
+            }
+        }
         services = (activity as BaseActivity).systemServices
         isFingerprintHardwareAvailable = services.isFingerprintHardwareAvailable()
 
@@ -142,6 +156,54 @@ class AccountFragment : ToolbarLRFragment<AccountModel, AccountView, AccountPres
             activity?.finish()
         }
 
+    }
+
+    // slide the view from below itself to the current position
+    fun slideUp(view: View) {
+        val animate = TranslateAnimation(
+                0f, // fromXDelta
+                0f, // toXDelta
+                view.height.toFloat(), // fromYDelta
+                -view.height.toFloat())                // toYDelta
+        animate.duration = 300
+        animate.fillAfter = true
+        animate.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                view.visibility = View.GONE
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    fun slideDown(view: View) {
+        val animate = TranslateAnimation(
+                0f, // fromXDelta
+                0f, // toXDelta
+                0f, // fromYDelta
+                view.height.toFloat()) // toYDelta
+        animate.duration = 300
+        animate.fillAfter = true
+        animate.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                view.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+        view.startAnimation(animate)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
