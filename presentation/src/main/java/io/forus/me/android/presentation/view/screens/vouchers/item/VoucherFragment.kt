@@ -240,7 +240,7 @@ class VoucherFragment : ToolbarLRFragment<VoucherModel, VoucherView,
             shopkeeper_card.visibility =
                     if (voucher.isProduct) View.VISIBLE else View.GONE
 
-            if (voucher.transactions.isNotEmpty()) {
+            if (voucher.isProduct) {
                 tv_created.text = resources.getString(R.string.voucher_created,
                         dateFormat.format(voucher.createdAt))
             }
