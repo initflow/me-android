@@ -5,11 +5,13 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.ListPopupWindow
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.animation.Animation
 import io.forus.me.android.domain.models.qr.QrCode
 import io.forus.me.android.presentation.BuildConfig
@@ -24,12 +26,10 @@ import io.forus.me.android.presentation.view.screens.account.account.dialogs.Abo
 import io.forus.me.android.presentation.view.screens.dashboard.DashboardActivity
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.account_item.*
 import kotlinx.android.synthetic.main.fragment_account_details.*
 import kotlinx.android.synthetic.main.toolbar_view.*
 import android.view.animation.TranslateAnimation
-
-
+import kotlinx.android.synthetic.main.account_item.*
 
 
 /**
@@ -87,10 +87,13 @@ class AccountFragment : ToolbarLRFragment<AccountModel, AccountView, AccountPres
         drop_down.visibility = View.VISIBLE
 
         toolbar_view.setOnClickListener {
-            if (account_card_view.visibility == View.GONE) {
-                slideDown(account_card_view)
+            if (account_item.visibility == View.GONE) {
+                drop_down.setImageDrawable(resources.getDrawable(R.drawable.ic_arrow_drop_up_black_24dp))
+                slideDown(account_item)
+
             } else {
-                slideUp(account_card_view)
+                drop_down.setImageDrawable(resources.getDrawable(R.drawable.ic_arrow_drop_down_black_24dp))
+                slideUp(account_item)
             }
         }
         services = (activity as BaseActivity).systemServices
@@ -163,23 +166,13 @@ class AccountFragment : ToolbarLRFragment<AccountModel, AccountView, AccountPres
         val animate = TranslateAnimation(
                 0f, // fromXDelta
                 0f, // toXDelta
-                view.height.toFloat(), // fromYDelta
-                -view.height.toFloat())                // toYDelta
+                0f, // fromYDelta
+                0f)                // toYDelta
         animate.duration = 300
         animate.fillAfter = true
-        animate.setAnimationListener(object: Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
 
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                view.visibility = View.GONE
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
         view.startAnimation(animate)
+        view.visibility = View.GONE
     }
 
     // slide the view from its current position to below itself
@@ -188,22 +181,12 @@ class AccountFragment : ToolbarLRFragment<AccountModel, AccountView, AccountPres
                 0f, // fromXDelta
                 0f, // toXDelta
                 0f, // fromYDelta
-                view.height.toFloat()) // toYDelta
+                0f) // toYDelta
         animate.duration = 300
         animate.fillAfter = true
-        animate.setAnimationListener(object: Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
 
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                view.visibility = View.VISIBLE
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
         view.startAnimation(animate)
+        view.visibility = View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

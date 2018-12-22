@@ -15,6 +15,7 @@
         android:id="@+id/collapsing_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFF"
         android:paddingTop="@dimen/activity_horizontal_margin_small"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         app:contentScrim="@color/colorPrimary"
@@ -22,15 +23,14 @@
         app:expandedTitleMarginStart="48dp"
         app:expandedTitleTextAppearance="@style/ActionBar.TitleTextStyle"
         app:layout_scrollFlags="scroll|enterAlways|snap"
-        android:background="#FFF"
         app:theme="@style/ToolbarStyle"
         app:titleEnabled="false">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_view"
-            android:background="?selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
             app:layout_collapseMode="pin"
             app:theme="@style/ToolbarStyle">
 
@@ -94,6 +94,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include layout="@layout/account_item" />
 </android.support.design.widget.AppBarLayout>
 
